@@ -29,16 +29,16 @@ func newViewCmd(app *App) *cobra.Command {
 		Use:   "view",
 		Short: "View details about a codespace",
 		Example: heredoc.Doc(`
-			# select a codespace from a list of all codespaces you own
-			$ gh cs view	
+			# Select a codespace from a list of all codespaces you own
+			$ gh cs view
 
-			# view the details of a specific codespace
+			# View the details of a specific codespace
 			$ gh cs view -c codespace-name-12345
 
-			# view the list of all available fields for a codespace
+			# View the list of all available fields for a codespace
 			$ gh cs view --json
 
-			# view specific fields for a codespace
+			# View specific fields for a codespace
 			$ gh cs view --json displayName,machineDisplayName,state
 		`),
 		Args: noArgsConstraint,
@@ -73,7 +73,8 @@ func (a *App) ViewCodespace(ctx context.Context, opts *viewOptions) error {
 		return opts.exporter.Write(a.io, selectedCodespace)
 	}
 
-	tp := tableprinter.New(a.io)
+	//nolint:staticcheck // SA1019: Showing NAME|VALUE headers adds nothing to table.
+	tp := tableprinter.New(a.io, tableprinter.NoHeader)
 	c := codespace{selectedCodespace}
 	formattedName := formatNameForVSCSTarget(c.Name, c.VSCSTarget)
 
